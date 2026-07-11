@@ -1,5 +1,10 @@
 import { business } from "@/data/business";
 import type { QuizAnswerLabels } from "@/data/quiz";
+import {
+  defaultLocale,
+  dictionaries,
+  type Locale,
+} from "@/i18n/dictionaries";
 
 export const campaignKeys = [
   "utm_source",
@@ -39,6 +44,7 @@ export type WhatsAppOptions = {
   search?: string;
   campaign?: CampaignRecord;
   quizData?: QuizAnswerLabels;
+  locale?: Locale;
 };
 
 export const campaignStorageKey = "samurai_first_campaign_v1";
@@ -98,48 +104,54 @@ export function resolveCampaignRecord(search = ""): CampaignRecord {
   return extractCampaignRecord(search);
 }
 
-function buildQuizText(quizData?: QuizAnswerLabels) {
+function buildQuizText(quizData: QuizAnswerLabels | undefined, locale: Locale) {
   if (!quizData) return "";
 
+  const dictionary = dictionaries[locale];
   const lines = [
-    ["Meu nível", quizData.level],
-    ["Meu objetivo", quizData.goal],
-    ["Prefiro começar", quizData.format],
-    ["Melhor período", quizData.period],
-    ["Minha principal dúvida", quizData.concern],
+    [dictionary.quiz.labels.level, quizData.level],
+    [dictionary.quiz.labels.goal, quizData.goal],
+    [dictionary.quiz.labels.format, quizData.format],
+    [dictionary.quiz.labels.period, quizData.period],
+    [dictionary.quiz.labels.concern, quizData.concern],
   ]
     .filter((entry): entry is [string, string] => Boolean(entry[1]))
     .map(([label, value]) => `${label}: ${value}`);
 
-  return lines.length ? `Respostas do pré-atendimento:\n${lines.join("\n")}` : "";
+  return lines.length
+    ? `${dictionary.whatsapp.quizAnswersTitle}\n${lines.join("\n")}`
+    : "";
 }
 
 export function buildWhatsAppUrl({
   origin,
   section,
   ctaId,
-  message = "Olá, Samurai! Conheci as aulas pelo site e gostaria de saber como funciona para começar.",
+  message,
   search = "",
   campaign,
   quizData,
+  locale = defaultLocale,
 }: WhatsAppOptions) {
+  const dictionary = dictionaries[locale];
+  const safeMessage = message ?? dictionary.whatsapp.defaultMessage;
   const campaignRecord = campaign ?? extractCampaignRecord(search);
   const campaignEntries = campaignRecordToEntries(campaignRecord);
   const campaignText = campaignEntries.length
-    ? `Origem da campanha:\n${campaignEntries
+    ? `${dictionary.whatsapp.campaignTitle}\n${campaignEntries
         .map(([key, value]) => `${key}: ${value}`)
         .join("\n")}`
     : "";
 
   const contextLines = [
-    `Origem do clique: ${origin}`,
-    section ? `Seção: ${section}` : "",
-    ctaId ? `CTA: ${ctaId}` : "",
+    `${dictionary.whatsapp.origin}: ${origin}`,
+    section ? `${dictionary.whatsapp.section}: ${section}` : "",
+    ctaId ? `${dictionary.whatsapp.cta}: ${ctaId}` : "",
   ].filter(Boolean);
 
   const parts = [
-    message.trim(),
-    buildQuizText(quizData),
+    safeMessage.trim(),
+    buildQuizText(quizData, locale),
     contextLines.join("\n"),
     campaignText,
   ].filter(Boolean);

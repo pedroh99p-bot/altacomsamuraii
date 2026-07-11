@@ -1,29 +1,37 @@
-const languages = [
-  { code: "br", label: "Atendimento em português", active: true },
-  { code: "us", label: "Atendimento em inglês", active: false },
-  { code: "es", label: "Atendimento em espanhol", active: false },
-] as const;
+"use client";
+
+import { localeOptions } from "@/i18n/dictionaries";
+import { useTranslations } from "@/i18n/useTranslations";
 
 export function LanguageSelector() {
+  const { locale, setLocale, t } = useTranslations();
+
   return (
     <div
       className="language-selector"
-      aria-label="Atendimento em português, inglês e espanhol"
+      aria-label={t.languages.label}
     >
-      {languages.map((language) => (
-        <span
-          key={language.code}
-          className={language.active ? "is-active" : undefined}
-          role="img"
-          aria-label={language.label}
-          title={language.label}
-        >
-          <span
-            className={`language-selector__flag language-selector__flag--${language.code}`}
-            aria-hidden="true"
-          />
-        </span>
-      ))}
+      {localeOptions.map((option) => {
+        const isActive = locale === option.locale;
+        const label = t.languages.options[option.locale];
+
+        return (
+          <button
+            key={option.locale}
+            type="button"
+            className={isActive ? "is-active" : undefined}
+            aria-label={label}
+            aria-pressed={isActive}
+            title={label}
+            onClick={() => setLocale(option.locale)}
+          >
+            <span
+              className={`language-selector__flag language-selector__flag--${option.flag}`}
+              aria-hidden="true"
+            />
+          </button>
+        );
+      })}
     </div>
   );
 }

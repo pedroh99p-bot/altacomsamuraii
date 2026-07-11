@@ -1,3 +1,5 @@
+"use client";
+
 import { AboutSamurai } from "@/components/AboutSamurai";
 import { EditorialRoller } from "@/components/EditorialRoller";
 import { FAQSection } from "@/components/FAQSection";
@@ -13,33 +15,11 @@ import { PracticalExperienceSection } from "@/components/PracticalExperienceSect
 import { Quiz } from "@/components/Quiz";
 import { SocialProofSection } from "@/components/SocialProofSection";
 import { TopbarRoller } from "@/components/TopbarRoller";
-
-const rollerOneItems = [
-  "Iniciantes bem-vindos",
-  "Praia do Pontal",
-  "Todos os níveis",
-  "PT • EN • ES",
-  "Ritmo adaptado",
-] as const;
-
-const rollerTwoItems = [
-  "Técnica",
-  "Confiança",
-  "Comunidade",
-  "Evolução",
-  "Energia de praia",
-  "Treino no seu ritmo",
-] as const;
-
-const rollerThreeItems = [
-  "Sua primeira aula pode começar aqui",
-  "Fale com o Samurai",
-  "Praia do Pontal",
-  "Comece no seu ritmo",
-  "Iniciantes bem-vindos",
-] as const;
+import { useTranslations } from "@/i18n/useTranslations";
 
 export default function Home() {
+  const { t } = useTranslations();
+
   return (
     <>
       <Preloader />
@@ -50,25 +30,25 @@ export default function Home() {
         <IntroVideoSection />
         <Quiz />
         <EditorialRoller
-          items={rollerOneItems}
-          label="Iniciantes bem-vindos, Praia do Pontal, Todos os níveis, PT, EN, ES, Ritmo adaptado"
+          items={t.rollers.one.items}
+          label={t.rollers.one.label}
         />
         <AboutSamurai />
         <SocialProofSection />
         <EditorialRoller
-          items={rollerTwoItems}
+          items={t.rollers.two.items}
           variant="navy"
           reverse
-          label="Técnica, Confiança, Comunidade, Evolução, Energia de praia, Treino no seu ritmo"
+          label={t.rollers.two.label}
         />
         <PracticalExperienceSection />
         <FAQSection />
         <LocationSection />
         <EditorialRoller
           id="roller-final"
-          items={rollerThreeItems}
+          items={t.rollers.three.items}
           variant="sand"
-          label="Sua primeira aula pode começar aqui, Fale com o Samurai, Praia do Pontal, Comece no seu ritmo, Iniciantes bem-vindos"
+          label={t.rollers.three.label}
         />
         <FinalCTA />
       </main>

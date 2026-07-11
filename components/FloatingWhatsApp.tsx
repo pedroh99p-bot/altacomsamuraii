@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "@/i18n/useTranslations";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 export function FloatingWhatsApp() {
+  const { t } = useTranslations();
   const [visible, setVisible] = useState(false);
   const [heroVisible, setHeroVisible] = useState(true);
   const [finalAreaVisible, setFinalAreaVisible] = useState(false);
@@ -77,10 +79,10 @@ export function FloatingWhatsApp() {
         origin="floating"
         section="floating"
         ctaId="floating-whatsapp"
-        ariaLabel="Chamar Altinha com Samurai no WhatsApp"
-        message="Olá, Samurai! Vim pelo botão flutuante do site e quero entender como funcionam as aulas de altinha."
+        ariaLabel={t.floating.ariaLabel}
+        message={t.floating.message}
       >
-        WhatsApp
+        {t.common.whatsapp}
       </WhatsAppButton>
     </div>
   );

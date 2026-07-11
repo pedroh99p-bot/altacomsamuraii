@@ -5,11 +5,13 @@ import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { business } from "@/data/business";
 import { navigation } from "@/data/navigation";
+import { useTranslations } from "@/i18n/useTranslations";
 import { LanguageSelector } from "./LanguageSelector";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { MobileMenu } from "./MobileMenu";
 
 export function Header() {
+  const { t } = useTranslations();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -36,10 +38,10 @@ export function Header() {
         </span>
       </a>
 
-      <nav className="desktop-nav" aria-label="Navegação principal">
+      <nav className="desktop-nav" aria-label={t.header.navAria}>
         {navigation.map((item) => (
           <a key={item.href} href={item.href}>
-            {item.label}
+            {t.navigation[item.key]}
           </a>
         ))}
       </nav>
@@ -55,14 +57,15 @@ export function Header() {
           ctaId="header-whatsapp"
           variant="soft"
           className="header-cta"
+          message={t.header.whatsappMessage}
         >
-          WhatsApp
+          {t.header.headerWhatsApp}
         </WhatsAppButton>
         <button
           type="button"
           className="icon-button menu-trigger"
           onClick={() => setOpen(true)}
-          aria-label="Abrir menu"
+          aria-label={t.header.openMenu}
         >
           <Menu aria-hidden="true" />
         </button>

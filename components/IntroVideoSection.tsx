@@ -3,10 +3,12 @@
 import { Pause, Play, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { business } from "@/data/business";
+import { useTranslations } from "@/i18n/useTranslations";
 import { trackEvent } from "@/lib/analytics";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 export function IntroVideoSection() {
+  const { t } = useTranslations();
   const videoRef = useRef<HTMLVideoElement>(null);
   const userPausedRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -68,22 +70,17 @@ export function IntroVideoSection() {
         <div className="intro-video__copy">
           <span className="intro-video__eyebrow">
             <Sparkles aria-hidden="true" />
-            Viva a experiência
+            {t.introVideo.eyebrow}
           </span>
-          <h2 id="intro-video-title">
-            Conheça o esporte que transforma a energia da praia em movimento.
-          </h2>
-          <p>
-            Altinha combina técnica, conexão, diversão e evolução em um cenário
-            que faz parte da experiência.
-          </p>
+          <h2 id="intro-video-title">{t.introVideo.title}</h2>
+          <p>{t.introVideo.body}</p>
           <WhatsAppButton
             origin="intro_video"
             section="intro_video"
             ctaId="intro-video-whatsapp"
-            message="Olá, Samurai! Vi o vídeo da experiência no site e quero fazer minha primeira aula na Praia do Pontal."
+            message={t.introVideo.whatsappMessage}
           >
-            Quero fazer minha primeira aula
+            {t.introVideo.cta}
           </WhatsAppButton>
         </div>
 
@@ -106,13 +103,13 @@ export function IntroVideoSection() {
               type="button"
               className="intro-video__control"
               onClick={togglePlayback}
-              aria-label={isPlaying ? "Pausar vídeo" : "Reproduzir vídeo"}
+              aria-label={isPlaying ? t.introVideo.pause : t.introVideo.play}
             >
               {isPlaying ? <Pause aria-hidden="true" /> : <Play aria-hidden="true" />}
             </button>
           </div>
           <div className="intro-video__note" aria-hidden="true">
-            Técnica, praia e movimento em uma experiência prática.
+            {t.introVideo.note}
           </div>
         </div>
       </div>

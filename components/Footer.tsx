@@ -1,12 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Camera, MapPin, MessageCircle } from "lucide-react";
 import { business } from "@/data/business";
-import { navigation, serviceLanguages } from "@/data/navigation";
+import { navigation } from "@/data/navigation";
+import { useTranslations } from "@/i18n/useTranslations";
 import { ConsentPreferencesButton } from "./ConsentPreferencesButton";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 export function Footer() {
+  const { t } = useTranslations();
   const year = new Date().getFullYear();
 
   return (
@@ -26,11 +30,7 @@ export function Footer() {
               <span>{business.instructor}</span>
             </div>
           </div>
-          <p>
-            Aulas de altinha na {business.locale.beach}, no{" "}
-            {business.locale.neighborhood}, com treino adaptado e contato
-            direto pelo WhatsApp.
-          </p>
+          <p>{t.footer.description}</p>
           <div className="site-footer__brand-actions">
             <WhatsAppButton
               origin="footer"
@@ -38,10 +38,10 @@ export function Footer() {
               ctaId="footer-whatsapp"
               variant="ghost"
               icon={false}
-              message="Olá, Samurai! Vim pelo rodapé do site e quero saber como funcionam as aulas."
+              message={t.footer.whatsappMessage}
             >
               <MessageCircle aria-hidden="true" />
-              WhatsApp
+              {t.common.whatsapp}
             </WhatsAppButton>
             <a
               href={business.instagram}
@@ -50,34 +50,34 @@ export function Footer() {
               className="site-footer__social"
             >
               <Camera aria-hidden="true" />
-              Instagram
+              {t.common.instagram}
             </a>
           </div>
         </div>
 
-        <nav className="site-footer__nav" aria-label="Navegação do rodapé">
-          <h2>Navegação</h2>
+        <nav className="site-footer__nav" aria-label={t.footer.navigationTitle}>
+          <h2>{t.footer.navigationTitle}</h2>
           {navigation.map((item) => (
             <a key={item.href} href={item.href}>
-              {item.label}
+              {t.navigation[item.key]}
             </a>
           ))}
         </nav>
 
         <div className="site-footer__info">
-          <h2>Informações</h2>
+          <h2>{t.footer.infoTitle}</h2>
           <span>
             <MapPin aria-hidden="true" />
-            {business.locale.beach}
+            {t.common.beach}
           </span>
-          <span>{business.locale.neighborhood}</span>
-          <span>{business.locale.reference}</span>
-          <span>Atendimento {serviceLanguages.join(", ")}</span>
+          <span>{t.common.neighborhood}</span>
+          <span>{t.common.reference}</span>
+          <span>{t.footer.serviceLanguages}</span>
         </div>
 
         <div className="site-footer__bottom">
-          <span>© {year} {business.name}. Todos os direitos reservados.</span>
-          <Link href="/privacidade">Política de privacidade</Link>
+          <span>© {year} {business.name}. {t.footer.rights}</span>
+          <Link href="/privacidade">{t.footer.privacy}</Link>
           <ConsentPreferencesButton />
         </div>
       </div>
@@ -87,12 +87,12 @@ export function Footer() {
             href={business.productionCredit.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Produzido por ${business.productionCredit.name}`}
+            aria-label={t.common.production}
           >
-            Produzido por {business.productionCredit.name}
+            {t.common.production}
           </a>
         ) : (
-          <span>Produzido por {business.productionCredit.name}</span>
+          <span>{t.common.production}</span>
         )}
       </div>
     </footer>

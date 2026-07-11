@@ -6,14 +6,18 @@ import {
   buildQuizWhatsAppMessage,
   getQuizAnswerLabels,
   getQuizResult,
-  quizQuestions,
+  type LocalizedQuizQuestion,
   type QuizAnswers,
+  type QuizQuestionId,
 } from "@/data/quiz";
+import { useTranslations } from "@/i18n/useTranslations";
 import { trackEvent } from "@/lib/analytics";
 import { cx } from "@/lib/utils";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 export function Quiz() {
+  const { t } = useTranslations();
+  const quizQuestions = t.quiz.questions as readonly LocalizedQuizQuestion[];
   const [started, setStarted] = useState(false);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
@@ -23,9 +27,14 @@ export function Quiz() {
   const advanceTimerRef = useRef<number | null>(null);
 
   const currentQuestion = quizQuestions[step];
-  const labels = useMemo(() => getQuizAnswerLabels(answers), [answers]);
-  const result = useMemo(() => getQuizResult(labels), [labels]);
-  const selected = currentQuestion ? answers[currentQuestion.id] : undefined;
+  const labels = useMemo(
+    () => getQuizAnswerLabels(answers, quizQuestions),
+    [answers, quizQuestions],
+  );
+  const result = useMemo(() => getQuizResult(answers, t), [answers, t]);
+  const selected = currentQuestion
+    ? answers[currentQuestion.id as QuizQuestionId]
+    : undefined;
   const progress = !started
     ? 0
     : completed
@@ -44,7 +53,7 @@ export function Quiz() {
       titleRef.current?.focus();
       trackEvent("quiz_step", {
         section: "quiz",
-        quiz_step: completed ? "resultado" : step + 1,
+          quiz_step: completed ? "resultado" : step + 1,
       });
     }
   }, [started, step, completed]);
@@ -68,8 +77,7 @@ export function Quiz() {
       ...answers,
       [currentQuestion.id]: answerId,
     };
-    const nextLabels = getQuizAnswerLabels(nextAnswers);
-    const nextResult = getQuizResult(nextLabels);
+    const nextResult = getQuizResult(nextAnswers, t);
 
     setAnswers(nextAnswers);
     setIsAdvancing(true);
@@ -122,13 +130,9 @@ export function Quiz() {
     <section className="quiz-section" id="quiz" aria-labelledby="quiz-title">
       <div className="section-shell quiz-section__layout">
         <div className="quiz-section__intro">
-          <span>Pré-atendimento</span>
-          <h2 id="quiz-title">Descubra a aula ideal para você.</h2>
-          <p>
-            Responda em menos de um minuto e leve para o WhatsApp uma mensagem
-            útil, com seu nível, objetivo, preferência de formato e principal
-            dúvida.
-          </p>
+          <span>{t.quiz.eyebrow}</span>
+          <h2 id="quiz-title">{t.quiz.title}</h2>
+          <p>{t.quiz.description}</p>
         </div>
 
         <div className="quiz-card" aria-live="polite">
@@ -139,19 +143,16 @@ export function Quiz() {
           {!started ? (
             <div className="quiz-card__body quiz-card__start">
               <h3 ref={titleRef} tabIndex={-1}>
-                Comece pelo seu momento atual.
+                {t.quiz.startTitle}
               </h3>
-              <p>
-                Não existe resposta certa. As respostas só servem para facilitar
-                a conversa com Samurai.
-              </p>
+              <p>{t.quiz.startText}</p>
               <button type="button" className="quiz-card__primary" onClick={start}>
-                Começar quiz
+                {t.quiz.startButton}
               </button>
             </div>
           ) : completed ? (
             <div className="quiz-card__body quiz-result">
-              <span>Resultado</span>
+              <span>{t.quiz.resultLabel}</span>
               <h3 ref={titleRef} tabIndex={-1}>
                 {result.title}
               </h3>
@@ -160,7 +161,9 @@ export function Quiz() {
                 {quizQuestions.map((question) => (
                   <div key={question.id}>
                     <strong>{question.question}</strong>
-                    <span>{labels[question.id] ?? "Não informado"}</span>
+                    <span>
+                      {labels[question.id as QuizQuestionId] ?? t.quiz.notInformed}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -169,18 +172,18 @@ export function Quiz() {
                   origin="quiz"
                   section="quiz"
                   ctaId="quiz-result-whatsapp"
-                  message={buildQuizWhatsAppMessage(labels)}
+                  message={buildQuizWhatsAppMessage(labels, t)}
                   trackingPayload={{ recommended_profile: result.recommendedProfile }}
                 >
-                  Enviar respostas ao Samurai
+                  {t.quiz.send}
                 </WhatsAppButton>
                 <button type="button" onClick={goBack}>
                   <ArrowLeft aria-hidden="true" />
-                  Voltar
+                  {t.quiz.back}
                 </button>
                 <button type="button" onClick={restart}>
                   <RotateCcw aria-hidden="true" />
-                  Refazer
+                  {t.quiz.restart}
                 </button>
               </div>
             </div>
@@ -188,10 +191,19 @@ export function Quiz() {
             <div className="quiz-card__body quiz-question" key={currentQuestion.id}>
               <div className="quiz-question__meta">
                 <span>
-                  Pergunta {step + 1} de {quizQuestions.length}
+                  {t.quiz.questionProgress
+                    .replace("{current}", String(step + 1))
+                    .replace("{total}", String(quizQuestions.length))}
                 </span>
                 {" "}
-                <span aria-label={`Progresso ${progress}%`}>{progress}%</span>
+                <span
+                  aria-label={t.quiz.progressLabel.replace(
+                    "{progress}",
+                    String(progress),
+                  )}
+                >
+                  {progress}%
+                </span>
               </div>
 
               <h3 ref={titleRef} tabIndex={-1}>
@@ -227,16 +239,16 @@ export function Quiz() {
                     className="quiz-card__back"
                   >
                     <ArrowLeft aria-hidden="true" />
-                    Voltar
+                    {t.quiz.back}
                   </button>
                 ) : (
                   <span className="quiz-question__hint">
                     <Sparkles aria-hidden="true" />
-                    Escolha uma resposta para avançar
+                    {t.quiz.hint}
                   </span>
                 )}
                 <span className="quiz-card__status" role="status" aria-live="polite">
-                  {isAdvancing ? "Avançando..." : "Avanço automático"}
+                  {isAdvancing ? t.quiz.advancing : t.quiz.autoAdvance}
                 </span>
               </div>
             </div>

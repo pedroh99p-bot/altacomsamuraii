@@ -1,9 +1,13 @@
+"use client";
+
 import { Compass, MapPin, Navigation, ShieldCheck } from "lucide-react";
 import { business } from "@/data/business";
+import { useTranslations } from "@/i18n/useTranslations";
 import { TrackedLink } from "./TrackedLink";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 export function LocationSection() {
+  const { t } = useTranslations();
   const hasMap = Boolean(business.location.mapEmbedSrc);
 
   return (
@@ -15,23 +19,19 @@ export function LocationSection() {
       <div className="section-shell location-section__layout">
         <div className="location-section__copy">
           <div className="location-section__heading">
-            <span>Localização</span>
-            <h2 id="location-title">Seu treino acontece de frente para o mar.</h2>
-            <p>
-              As aulas acontecem na Praia do Pontal, no Recreio, na região do
-              Posto 12. O ponto exato é confirmado no contato para facilitar
-              sua chegada.
-            </p>
+            <span>{t.location.eyebrow}</span>
+            <h2 id="location-title">{t.location.title}</h2>
+            <p>{t.location.body}</p>
           </div>
 
           <div className="meeting-card">
             <MapPin aria-hidden="true" />
-            <span>Ponto de encontro</span>
-            <h3>{business.location.meetingPoint}</h3>
-            <p>{business.location.neighborhoodAndCity}</p>
+            <span>{t.location.meetingLabel}</span>
+            <h3>{t.location.meetingPoint}</h3>
+            <p>{t.location.neighborhoodAndCity}</p>
             <small>
               <ShieldCheck aria-hidden="true" />
-              Ponto exato confirmado pelo WhatsApp antes da aula.
+              {t.location.exactNote}
             </small>
           </div>
 
@@ -45,15 +45,15 @@ export function LocationSection() {
               payload={{ section: "localizacao", cta_id: "open-route" }}
             >
               <Navigation aria-hidden="true" />
-              Abrir rota
+              {t.location.route}
             </TrackedLink>
             <WhatsAppButton
               origin="location"
               section="localizacao"
               ctaId="location-whatsapp"
-              message="Olá, Samurai! Quero confirmar o ponto de encontro da aula na Praia do Pontal, região do Posto 12."
+              message={t.location.whatsappMessage}
             >
-              Confirmar ponto pelo WhatsApp
+              {t.location.cta}
             </WhatsAppButton>
           </div>
         </div>
@@ -61,7 +61,7 @@ export function LocationSection() {
         <div className="location-map">
           {hasMap ? (
             <iframe
-              title="Mapa aproximado da Praia do Pontal, região do Posto 12"
+              title={t.location.mapTitle}
               src={business.location.mapEmbedSrc}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -70,11 +70,8 @@ export function LocationSection() {
           ) : (
             <div className="location-map__fallback">
               <Compass aria-hidden="true" />
-              <h3>Mapa pendente de confirmação.</h3>
-              <p>
-                A referência confirmada é Praia do Pontal, Recreio dos
-                Bandeirantes, região do Posto 12.
-              </p>
+              <h3>{t.location.mapPendingTitle}</h3>
+              <p>{t.location.mapPendingText}</p>
             </div>
           )}
         </div>

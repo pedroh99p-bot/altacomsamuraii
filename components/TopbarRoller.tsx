@@ -1,19 +1,13 @@
-import { serviceLanguages } from "@/data/navigation";
+"use client";
 
-const topbarItems = [
-  serviceLanguages.join(" • "),
-  "Praia do Pontal",
-  "Posto 12",
-  "Aulas todos os dias",
-  "Iniciantes bem-vindos",
-  "Treino no seu ritmo",
-];
+import { useTranslations } from "@/i18n/useTranslations";
 
 export function TopbarRoller() {
-  const content = topbarItems.join("  •  ");
+  const { t } = useTranslations();
+  const content = t.topbar.items.join("  •  ");
 
   return (
-    <div className="topbar" aria-label="Informações rápidas">
+    <div className="topbar" aria-label={t.topbar.ariaLabel}>
       <div className="topbar__track">
         <span>{content}</span>
         <span aria-hidden="true">{content}</span>

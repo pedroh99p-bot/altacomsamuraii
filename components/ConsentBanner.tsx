@@ -9,6 +9,7 @@ import {
   saveConsent,
   type ConsentPreferences,
 } from "@/lib/analytics";
+import { useTranslations } from "@/i18n/useTranslations";
 
 type DraftPreferences = Pick<
   ConsentPreferences,
@@ -22,6 +23,7 @@ const defaultDraft: DraftPreferences = {
 };
 
 export function ConsentBanner() {
+  const { t } = useTranslations();
   const [visible, setVisible] = useState(false);
   const [customizing, setCustomizing] = useState(false);
   const [draft, setDraft] = useState<DraftPreferences>(defaultDraft);
@@ -68,28 +70,25 @@ export function ConsentBanner() {
     <div className="consent" role="dialog" aria-labelledby="consent-title">
       <div className="consent__panel">
         <div className="consent__copy">
-          <span>Privacidade</span>
-          <h2 id="consent-title">Controle seus cookies.</h2>
-          <p>
-            Usamos essenciais para o site funcionar. Analytics e marketing só
-            entram se você permitir. Você pode mudar isso no rodapé.
-          </p>
-          <Link href="/privacidade">Ver política de privacidade</Link>
+          <span>{t.consent.eyebrow}</span>
+          <h2 id="consent-title">{t.consent.title}</h2>
+          <p>{t.consent.text}</p>
+          <Link href="/privacidade">{t.consent.privacyLink}</Link>
         </div>
 
         {customizing ? (
-          <div className="consent__options" aria-label="Preferências de cookies">
+          <div className="consent__options" aria-label={t.consent.optionsAria}>
             <label>
               <span>
-                <strong>Essenciais</strong>
-                <small>Necessários para navegação e segurança.</small>
+                <strong>{t.consent.essentialTitle}</strong>
+                <small>{t.consent.essentialText}</small>
               </span>
               <input type="checkbox" checked disabled />
             </label>
             <label>
               <span>
-                <strong>Analytics</strong>
-                <small>Ajuda a entender seções, CTAs e origem de campanha.</small>
+                <strong>{t.consent.analyticsTitle}</strong>
+                <small>{t.consent.analyticsText}</small>
               </span>
               <input
                 type="checkbox"
@@ -104,8 +103,8 @@ export function ConsentBanner() {
             </label>
             <label>
               <span>
-                <strong>Marketing</strong>
-                <small>Permite pixels de mídia quando houver ID real.</small>
+                <strong>{t.consent.marketingTitle}</strong>
+                <small>{t.consent.marketingText}</small>
               </span>
               <input
                 type="checkbox"
@@ -123,10 +122,10 @@ export function ConsentBanner() {
 
         <div className="consent__actions">
           <button type="button" onClick={() => save(false, false)}>
-            Recusar
+            {t.consent.reject}
           </button>
           <button type="button" onClick={() => setCustomizing(true)}>
-            Personalizar
+            {t.consent.customize}
           </button>
           <button
             type="button"
@@ -135,7 +134,7 @@ export function ConsentBanner() {
               customizing ? save(draft.analytics, draft.marketing) : save(true, true)
             }
           >
-            {customizing ? "Salvar preferências" : "Aceitar"}
+            {customizing ? t.consent.save : t.consent.accept}
           </button>
         </div>
       </div>

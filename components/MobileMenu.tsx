@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useEffect } from "react";
 import { business } from "@/data/business";
 import { navigation } from "@/data/navigation";
+import { useTranslations } from "@/i18n/useTranslations";
 import { LanguageSelector } from "./LanguageSelector";
 import { WhatsAppButton } from "./WhatsAppButton";
 
@@ -14,6 +15,8 @@ type MobileMenuProps = {
 };
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const { t } = useTranslations();
+
   useEffect(() => {
     if (!open) return;
 
@@ -47,20 +50,20 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             type="button"
             className="icon-button"
             onClick={onClose}
-            aria-label="Fechar menu"
+            aria-label={t.header.closeMenu}
           >
             <X aria-hidden="true" />
           </button>
         </div>
-        <nav className="mobile-menu__links" aria-label="Menu mobile">
+        <nav className="mobile-menu__links" aria-label={t.header.mobileNavAria}>
           {navigation.map((item) => (
             <a key={item.href} href={item.href} onClick={onClose}>
-              {item.label}
+              {t.navigation[item.key]}
             </a>
           ))}
         </nav>
         <div className="mobile-menu__languages">
-          <span>Atendimento</span>
+          <span>{t.languages.serviceLabel}</span>
           <LanguageSelector />
         </div>
         <WhatsAppButton
@@ -68,8 +71,9 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
           section="mobile-menu"
           ctaId="mobile-menu-whatsapp"
           className="mobile-menu__cta"
+          message={t.header.whatsappMessage}
         >
-          Agendar pelo WhatsApp
+          {t.header.mobileWhatsApp}
         </WhatsAppButton>
       </aside>
     </>

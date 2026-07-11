@@ -1,29 +1,33 @@
-import { faqItems } from "@/data/faq";
+"use client";
+
+import { useTranslations } from "@/i18n/useTranslations";
 import { SectionHeading } from "./SectionHeading";
 import { FAQAccordion } from "./FAQAccordion";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 export function FAQSection() {
+  const { t } = useTranslations();
+
   return (
     <section className="faq-section" id="faq" aria-labelledby="faq-title">
       <div className="section-shell faq-section__layout">
         <div className="faq-section__intro">
           <SectionHeading
-            eyebrow="FAQ"
-            title="Respostas diretas antes de chamar."
-            text="As respostas abaixo usam apenas informações confirmadas. Valor, disponibilidade e formato são alinhados no contato."
+            eyebrow={t.faq.eyebrow}
+            title={t.faq.title}
+            text={t.faq.text}
           />
           <WhatsAppButton
             origin="faq"
             section="faq"
             ctaId="faq-whatsapp"
             variant="soft"
-            message="Olá, Samurai! Li o FAQ e queria tirar uma dúvida sobre as aulas de altinha."
+            message={t.faq.whatsappMessage}
           >
-            Tirar dúvida no WhatsApp
+            {t.faq.cta}
           </WhatsAppButton>
         </div>
-        <FAQAccordion items={faqItems} />
+        <FAQAccordion items={t.faq.items} />
       </div>
     </section>
   );

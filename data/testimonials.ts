@@ -1,33 +1,32 @@
-export type TestimonialType =
-  | "whatsapp_print"
-  | "google_review"
-  | "photo"
-  | "video"
-  | "text";
+import type { Locale } from "@/i18n/dictionaries";
+
+export type TestimonialType = "google" | "whatsapp" | "text";
 
 export type TestimonialItem = {
   id: string;
   type: TestimonialType;
   name: string;
-  image: string;
-  alt: string;
   text: string;
+  rating: number | null;
   source: string;
-  date: string;
+  date: string | null;
   authorized: boolean;
+  locale: Locale | "all";
   order: number;
+  enabled: boolean;
 };
 
 export const testimonials: TestimonialItem[] = [];
 
-export const socialProofNotes = [
-  "A experiência já é apresentada com foto real da comunidade.",
-  "Prints e avaliações só entram quando forem reais e autorizados.",
-  "O carrossel está preparado para receber WhatsApp, Google, fotos, vídeos e textos.",
-] as const;
-
-export function getAuthorizedTestimonials() {
+export function getAuthorizedTestimonials(locale?: Locale) {
   return testimonials
-    .filter((item) => item.authorized)
+    .filter((item) => item.authorized && item.enabled)
+    .filter((item) => !locale || item.locale === "all" || item.locale === locale)
     .sort((a, b) => a.order - b.order);
+}
+
+export function getAuthorizedGoogleTestimonials(locale?: Locale) {
+  return getAuthorizedTestimonials(locale).filter(
+    (item) => item.type === "google" && item.rating === 5,
+  );
 }

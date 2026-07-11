@@ -5,6 +5,7 @@ import { AnalyticsProvider } from "@/components/AnalyticsProvider";
 import { ConsentBanner } from "@/components/ConsentBanner";
 import { JsonLd } from "@/components/JsonLd";
 import { business } from "@/data/business";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
 import { siteDescription, siteTitle } from "@/lib/seo";
 
 const display = Paytone_One({
@@ -70,9 +71,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${display.variable} ${body.variable}`}>
       <body>
-        <AnalyticsProvider />
-        {children}
-        <ConsentBanner />
+        <LocaleProvider>
+          <AnalyticsProvider />
+          {children}
+          <ConsentBanner />
+        </LocaleProvider>
         <JsonLd />
       </body>
     </html>

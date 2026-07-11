@@ -94,7 +94,6 @@ export const objections = [
 ] as const;
 
 export const specialistBullets = [
-  { label: "Acompanhamento próximo", icon: HeartHandshake },
   { label: "Treino adaptado ao nível do aluno", icon: ShieldCheck },
   { label: "Atendimento em PT, EN e ES", icon: Languages },
   { label: "Orientação para diferentes níveis", icon: Compass },

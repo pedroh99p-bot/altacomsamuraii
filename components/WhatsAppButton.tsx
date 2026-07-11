@@ -9,6 +9,7 @@ import {
   resolveCampaignRecord,
   type WhatsAppOrigin,
 } from "@/lib/whatsapp";
+import { useTranslations } from "@/i18n/useTranslations";
 import {
   trackEvent,
   trackLead,
@@ -48,9 +49,10 @@ export function WhatsAppButton({
   icon = true,
   ariaLabel,
 }: WhatsAppButtonProps) {
+  const { locale } = useTranslations();
   const fallback = useMemo(
-    () => buildWhatsAppUrl({ origin, message, section, ctaId, quizData }),
-    [origin, message, section, ctaId, quizData],
+    () => buildWhatsAppUrl({ origin, message, section, ctaId, quizData, locale }),
+    [origin, message, section, ctaId, quizData, locale],
   );
   const [href, setHref] = useState(fallback);
 
@@ -66,9 +68,10 @@ export function WhatsAppButton({
         ctaId,
         quizData,
         campaign,
+        locale,
       }),
     );
-  }, [origin, message, section, ctaId, quizData]);
+  }, [origin, message, section, ctaId, quizData, locale]);
 
   const payload: AnalyticsPayload = {
     section,
