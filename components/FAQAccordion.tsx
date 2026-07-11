@@ -48,7 +48,8 @@ export function FAQAccordion({ items }: FAQAccordionProps) {
               id={panelId}
               role="region"
               aria-label={item.question}
-              hidden={!isOpen}
+              aria-hidden={!isOpen}
+              className={isOpen ? "is-open" : undefined}
             >
               <p>{item.answer}</p>
             </div>

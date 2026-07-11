@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, RotateCcw } from "lucide-react";
+import { ArrowLeft, RotateCcw, Sparkles } from "lucide-react";
 import {
   buildQuizWhatsAppMessage,
   getQuizAnswerLabels,
@@ -18,15 +18,26 @@ export function Quiz() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
   const [completed, setCompleted] = useState(false);
+  const [isAdvancing, setIsAdvancing] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const advanceTimerRef = useRef<number | null>(null);
 
   const currentQuestion = quizQuestions[step];
   const labels = useMemo(() => getQuizAnswerLabels(answers), [answers]);
   const result = useMemo(() => getQuizResult(labels), [labels]);
   const selected = currentQuestion ? answers[currentQuestion.id] : undefined;
-  const progress = completed
+  const progress = !started
+    ? 0
+    : completed
     ? 100
     : Math.round(((step + 1) / quizQuestions.length) * 100);
+
+  const clearAdvanceTimer = () => {
+    if (advanceTimerRef.current) {
+      window.clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+  };
 
   useEffect(() => {
     if (started) {
@@ -38,41 +49,57 @@ export function Quiz() {
     }
   }, [started, step, completed]);
 
+  useEffect(() => () => clearAdvanceTimer(), []);
+
   const start = () => {
+    clearAdvanceTimer();
+    setStep(0);
+    setCompleted(false);
+    setIsAdvancing(false);
     setStarted(true);
     trackEvent("quiz_start", { section: "quiz", quiz_step: 1 });
   };
 
   const selectAnswer = (answerId: string, answerLabel: string) => {
-    if (!currentQuestion) return;
+    if (!currentQuestion || isAdvancing) return;
 
-    setAnswers((current) => ({
-      ...current,
+    clearAdvanceTimer();
+    const nextAnswers = {
+      ...answers,
       [currentQuestion.id]: answerId,
-    }));
+    };
+    const nextLabels = getQuizAnswerLabels(nextAnswers);
+    const nextResult = getQuizResult(nextLabels);
+
+    setAnswers(nextAnswers);
+    setIsAdvancing(true);
     trackEvent("quiz_answer", {
       section: "quiz",
       quiz_step: step + 1,
       quiz_answer: answerLabel,
     });
-  };
 
-  const goNext = () => {
-    if (!selected) return;
+    advanceTimerRef.current = window.setTimeout(() => {
+      advanceTimerRef.current = null;
+      setIsAdvancing(false);
 
-    if (step === quizQuestions.length - 1) {
-      setCompleted(true);
-      trackEvent("quiz_complete", {
-        section: "quiz",
-        recommended_profile: result.recommendedProfile,
-      });
-      return;
-    }
+      if (step === quizQuestions.length - 1) {
+        setCompleted(true);
+        trackEvent("quiz_complete", {
+          section: "quiz",
+          recommended_profile: nextResult.recommendedProfile,
+        });
+        return;
+      }
 
-    setStep((current) => current + 1);
+      setStep((current) => Math.min(current + 1, quizQuestions.length - 1));
+    }, 260);
   };
 
   const goBack = () => {
+    clearAdvanceTimer();
+    setIsAdvancing(false);
+
     if (completed) {
       setCompleted(false);
       setStep(quizQuestions.length - 1);
@@ -83,8 +110,10 @@ export function Quiz() {
   };
 
   const restart = () => {
+    clearAdvanceTimer();
     setStarted(false);
     setCompleted(false);
+    setIsAdvancing(false);
     setStep(0);
     setAnswers({});
   };
@@ -108,7 +137,7 @@ export function Quiz() {
           </div>
 
           {!started ? (
-            <div className="quiz-card__start">
+            <div className="quiz-card__body quiz-card__start">
               <h3 ref={titleRef} tabIndex={-1}>
                 Comece pelo seu momento atual.
               </h3>
@@ -121,7 +150,7 @@ export function Quiz() {
               </button>
             </div>
           ) : completed ? (
-            <div className="quiz-result">
+            <div className="quiz-card__body quiz-result">
               <span>Resultado</span>
               <h3 ref={titleRef} tabIndex={-1}>
                 {result.title}
@@ -145,6 +174,10 @@ export function Quiz() {
                 >
                   Enviar respostas ao Samurai
                 </WhatsAppButton>
+                <button type="button" onClick={goBack}>
+                  <ArrowLeft aria-hidden="true" />
+                  Voltar
+                </button>
                 <button type="button" onClick={restart}>
                   <RotateCcw aria-hidden="true" />
                   Refazer
@@ -152,12 +185,13 @@ export function Quiz() {
               </div>
             </div>
           ) : (
-            <div className="quiz-question">
+            <div className="quiz-card__body quiz-question" key={currentQuestion.id}>
               <div className="quiz-question__meta">
                 <span>
                   Pergunta {step + 1} de {quizQuestions.length}
                 </span>
-                <span>{progress}%</span>
+                {" "}
+                <span aria-label={`Progresso ${progress}%`}>{progress}%</span>
               </div>
 
               <h3 ref={titleRef} tabIndex={-1}>
@@ -174,31 +208,36 @@ export function Quiz() {
                       selected === option.id && "quiz-option--selected",
                     )}
                     aria-pressed={selected === option.id}
+                    disabled={isAdvancing}
                     onClick={() => selectAnswer(option.id, option.label)}
                   >
-                    {option.label}
+                    <span className="quiz-option__emoji" aria-hidden="true">
+                      {option.emoji}
+                    </span>
+                    <span>{option.label}</span>
                   </button>
                 ))}
               </div>
 
               <div className="quiz-question__actions">
-                <button
-                  type="button"
-                  onClick={goBack}
-                  disabled={step === 0}
-                  className="quiz-card__back"
-                >
-                  <ArrowLeft aria-hidden="true" />
-                  Voltar
-                </button>
-                <button
-                  type="button"
-                  className="quiz-card__primary"
-                  onClick={goNext}
-                  disabled={!selected}
-                >
-                  {step === quizQuestions.length - 1 ? "Ver resultado" : "Continuar"}
-                </button>
+                {step > 0 ? (
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    className="quiz-card__back"
+                  >
+                    <ArrowLeft aria-hidden="true" />
+                    Voltar
+                  </button>
+                ) : (
+                  <span className="quiz-question__hint">
+                    <Sparkles aria-hidden="true" />
+                    Escolha uma resposta para avançar
+                  </span>
+                )}
+                <span className="quiz-card__status" role="status" aria-live="polite">
+                  {isAdvancing ? "Avançando..." : "Avanço automático"}
+                </span>
               </div>
             </div>
           )}

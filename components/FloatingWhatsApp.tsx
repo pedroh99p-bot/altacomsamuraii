@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 export function FloatingWhatsApp() {
   const [visible, setVisible] = useState(false);
-  const [nearFooter, setNearFooter] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(true);
+  const [finalAreaVisible, setFinalAreaVisible] = useState(false);
+  const finalAreaEntries = useRef(new Set<string>());
 
   useEffect(() => {
     const onScroll = () => {
@@ -18,19 +20,56 @@ export function FloatingWhatsApp() {
   }, []);
 
   useEffect(() => {
-    const footer = document.getElementById("rodape");
-    if (!footer || !("IntersectionObserver" in window)) return;
+    const hero = document.getElementById("top");
+    if (!hero || !("IntersectionObserver" in window)) {
+      setHeroVisible(false);
+      return;
+    }
 
     const observer = new IntersectionObserver(
-      ([entry]) => setNearFooter(entry.isIntersecting),
-      { threshold: 0.08 },
+      ([entry]) => setHeroVisible(entry.isIntersecting),
+      { threshold: 0.02 },
     );
 
-    observer.observe(footer);
+    observer.observe(hero);
     return () => observer.disconnect();
   }, []);
 
-  if (!visible || nearFooter) return null;
+  useEffect(() => {
+    const watchedElements = [
+      document.getElementById("roller-final"),
+      document.getElementById("agendar"),
+      document.getElementById("rodape"),
+    ].filter((element): element is HTMLElement => Boolean(element));
+
+    if (watchedElements.length === 0 || !("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          if (!id) return;
+
+          if (entry.isIntersecting) {
+            finalAreaEntries.current.add(id);
+          } else {
+            finalAreaEntries.current.delete(id);
+          }
+        });
+
+        setFinalAreaVisible(finalAreaEntries.current.size > 0);
+      },
+      { threshold: 0.08 },
+    );
+
+    watchedElements.forEach((element) => observer.observe(element));
+    return () => {
+      observer.disconnect();
+      finalAreaEntries.current.clear();
+    };
+  }, []);
+
+  if (!visible || heroVisible || finalAreaVisible) return null;
 
   return (
     <div className="floating-wa">

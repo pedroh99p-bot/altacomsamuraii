@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import { X } from "lucide-react";
+import { useEffect } from "react";
 import { business } from "@/data/business";
-import { navigation, serviceLanguages } from "@/data/navigation";
+import { navigation } from "@/data/navigation";
+import { LanguageSelector } from "./LanguageSelector";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 type MobileMenuProps = {
@@ -12,6 +14,17 @@ type MobileMenuProps = {
 };
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
   return (
     <>
       <div
@@ -48,7 +61,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         </nav>
         <div className="mobile-menu__languages">
           <span>Atendimento</span>
-          <strong>{serviceLanguages.join(" • ")}</strong>
+          <LanguageSelector />
         </div>
         <WhatsAppButton
           origin="hero"

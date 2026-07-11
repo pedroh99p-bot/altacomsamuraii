@@ -9,11 +9,19 @@ export function Preloader() {
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
-    const alreadySeen = sessionStorage.getItem("samurai-preloader-seen");
+    let storage: Storage | null = null;
+
+    try {
+      storage = window.sessionStorage;
+    } catch {
+      storage = null;
+    }
+
+    const alreadySeen = storage?.getItem("samurai-preloader-seen");
     if (alreadySeen) return;
 
     setVisible(true);
-    sessionStorage.setItem("samurai-preloader-seen", "true");
+    storage?.setItem("samurai-preloader-seen", "true");
 
     const exitTimer = window.setTimeout(() => setLeaving(true), 900);
     const removeTimer = window.setTimeout(() => setVisible(false), 1350);

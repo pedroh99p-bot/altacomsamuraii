@@ -1,9 +1,9 @@
 export const navigation = [
-  { label: "Como funciona", href: "#como-funciona" },
-  { label: "Aulas", href: "#detalhes" },
-  { label: "Prova social", href: "#prova-social" },
-  { label: "Local", href: "#localizacao" },
+  { label: "A experiência", href: "#experiencia" },
   { label: "Quiz", href: "#quiz" },
+  { label: "O especialista", href: "#especialista" },
+  { label: "Como funciona", href: "#como-funciona" },
+  { label: "Localização", href: "#localizacao" },
   { label: "FAQ", href: "#faq" },
 ] as const;
 

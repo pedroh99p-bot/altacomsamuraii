@@ -4,7 +4,8 @@ import Image from "next/image";
 import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { business } from "@/data/business";
-import { navigation, serviceLanguages } from "@/data/navigation";
+import { navigation } from "@/data/navigation";
+import { LanguageSelector } from "./LanguageSelector";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { MobileMenu } from "./MobileMenu";
 
@@ -43,8 +44,11 @@ export function Header() {
         ))}
       </nav>
 
+      <div className="header-language">
+        <LanguageSelector />
+      </div>
+
       <div className="header-actions">
-        <span className="language-pill">{serviceLanguages.join(" • ")}</span>
         <WhatsAppButton
           origin="hero"
           section="header"

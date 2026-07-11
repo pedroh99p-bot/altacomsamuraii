@@ -14,10 +14,12 @@ export type CampaignRecord = Partial<Record<CampaignKey, string>>;
 
 export type WhatsAppOrigin =
   | "hero"
+  | "intro_video"
   | "quick_info"
   | "community"
   | "objections"
   | "specialist"
+  | "practical_details"
   | "how_it_works"
   | "class_details"
   | "class_profile"

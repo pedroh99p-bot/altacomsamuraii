@@ -8,6 +8,7 @@ export type QuizQuestionId =
 export type QuizOption = {
   id: string;
   label: string;
+  emoji: string;
 };
 
 export type QuizQuestion = {
@@ -24,49 +25,49 @@ export const quizQuestions: QuizQuestion[] = [
     id: "level",
     question: "Qual é o seu nível hoje?",
     options: [
-      { id: "never", label: "Nunca joguei" },
-      { id: "starting", label: "Estou começando" },
-      { id: "practice", label: "Já pratico um pouco" },
-      { id: "technical", label: "Quero evoluir tecnicamente" },
+      { id: "never", label: "Nunca joguei", emoji: "⚽" },
+      { id: "starting", label: "Estou começando", emoji: "🌱" },
+      { id: "practice", label: "Já pratico um pouco", emoji: "🔥" },
+      { id: "technical", label: "Quero evoluir tecnicamente", emoji: "🎯" },
     ],
   },
   {
     id: "goal",
     question: "Qual é seu principal objetivo?",
     options: [
-      { id: "learn", label: "Aprender do zero" },
-      { id: "confidence", label: "Jogar com mais confiança" },
-      { id: "technique", label: "Melhorar minha técnica" },
-      { id: "close", label: "Ter acompanhamento mais próximo" },
+      { id: "learn", label: "Aprender do zero", emoji: "🧩" },
+      { id: "confidence", label: "Jogar com mais confiança", emoji: "💪" },
+      { id: "technique", label: "Melhorar minha técnica", emoji: "📈" },
+      { id: "close", label: "Ter acompanhamento mais próximo", emoji: "🏆" },
     ],
   },
   {
     id: "format",
     question: "Como você imagina começar?",
     options: [
-      { id: "solo", label: "Sozinho" },
-      { id: "pair", label: "Com outra pessoa" },
-      { id: "group", label: "Em grupo" },
-      { id: "unsure", label: "Ainda não sei" },
+      { id: "solo", label: "Sozinho", emoji: "👤" },
+      { id: "pair", label: "Com outra pessoa", emoji: "👥" },
+      { id: "group", label: "Em grupo", emoji: "🏖️" },
+      { id: "unsure", label: "Ainda não sei", emoji: "🤔" },
     ],
   },
   {
     id: "period",
     question: "Qual período costuma funcionar melhor?",
     options: [
-      { id: "morning", label: "Manhã" },
-      { id: "late_afternoon", label: "Final da tarde" },
-      { id: "flexible", label: "Tenho flexibilidade" },
+      { id: "morning", label: "Manhã", emoji: "🌅" },
+      { id: "late_afternoon", label: "Final da tarde", emoji: "🌇" },
+      { id: "flexible", label: "Tenho flexibilidade", emoji: "🔄" },
     ],
   },
   {
     id: "concern",
     question: "O que mais gera dúvida ou insegurança?",
     options: [
-      { id: "pace", label: "Não conseguir acompanhar" },
-      { id: "shyness", label: "Vergonha de começar" },
-      { id: "technique_gap", label: "Falta de técnica" },
-      { id: "how", label: "Quero entender como funciona" },
+      { id: "pace", label: "Não conseguir acompanhar", emoji: "⚡" },
+      { id: "shyness", label: "Vergonha de começar", emoji: "😅" },
+      { id: "technique_gap", label: "Falta de técnica", emoji: "🧠" },
+      { id: "how", label: "Quero entender como funciona", emoji: "💬" },
     ],
   },
 ];

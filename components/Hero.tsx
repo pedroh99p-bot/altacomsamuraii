@@ -1,16 +1,35 @@
-import { ArrowDown, Play, Waves } from "lucide-react";
+import { ArrowDown, BarChart3, MapPin, Smile, Waves } from "lucide-react";
 import { business } from "@/data/business";
 import { heroBenefits } from "@/data/benefits";
 import { WhatsAppButton } from "./WhatsAppButton";
 
+const benefitIcons = {
+  "Iniciantes bem-vindos": Smile,
+  "Todos os níveis": BarChart3,
+  "Ritmo adaptado": Waves,
+  "Praia do Pontal": MapPin,
+} as const;
+
 export function Hero() {
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
-      <div className="hero__ambient" aria-hidden="true" />
+      <video
+        className="hero__background-video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster={business.assets.communityImage}
+        aria-hidden="true"
+      >
+        <source src={business.assets.heroVideo} type="video/webm" />
+      </video>
+      <div className="hero__overlay" aria-hidden="true" />
       <div className="hero__content">
         <div className="hero__copy">
           <div className="eyebrow">
-            <Waves aria-hidden="true" size={18} />
+            <MapPin aria-hidden="true" size={18} />
             Aulas na Praia do Pontal • Posto 12
           </div>
           <h1 id="hero-title">
@@ -36,31 +55,16 @@ export function Hero() {
             </a>
           </div>
           <ul className="hero__chips" aria-label="Benefícios principais">
-            {heroBenefits.map((benefit) => (
-              <li key={benefit}>{benefit}</li>
-            ))}
+            {heroBenefits.map((benefit) => {
+              const Icon = benefitIcons[benefit] ?? Waves;
+              return (
+                <li key={benefit}>
+                  <Icon aria-hidden="true" />
+                  <span>{benefit}</span>
+                </li>
+              );
+            })}
           </ul>
-        </div>
-
-        <div className="hero__media" aria-label="Vídeo de aula de altinha">
-          <div className="hero__video-frame">
-            <video
-              className="hero__video"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={business.assets.communityImage}
-            >
-              <source src={business.assets.heroVideo} type="video/webm" />
-            </video>
-            <div className="hero__video-overlay" aria-hidden="true" />
-            <div className="hero__video-badge">
-              <Play aria-hidden="true" size={16} />
-              Treino real na areia
-            </div>
-          </div>
         </div>
       </div>
     </section>
