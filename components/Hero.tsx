@@ -46,6 +46,7 @@ export function Hero() {
 
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
+      {/* Hero video configured to loop indefinitely with autoplay, muted, and playsinline */}
       <video
         ref={videoRef}
         className="hero__background-video"

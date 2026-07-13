@@ -15,6 +15,7 @@ import { PracticalExperienceSection } from "@/components/PracticalExperienceSect
 import { Quiz } from "@/components/Quiz";
 import { SocialProofSection } from "@/components/SocialProofSection";
 import { TopbarRoller } from "@/components/TopbarRoller";
+import { WaveDivider } from "@/components/WaveDivider";
 import { useTranslations } from "@/i18n/useTranslations";
 
 export default function Home() {
@@ -43,6 +44,7 @@ export default function Home() {
         />
         <PracticalExperienceSection />
         <FAQSection />
+        <WaveDivider variant="whiteToBlue" />
         <LocationSection />
         <EditorialRoller
           id="roller-final"
