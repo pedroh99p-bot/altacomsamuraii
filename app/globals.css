@@ -8,6 +8,7 @@
   --cyan-400: #35c6ee;
   --cyan-300: #7fe4ff;
   --sun-400: #ffc857;
+  --yellow: var(--sun-400);
   --sand-100: #f5fbff;
   --sand-200: #e7f4fb;
   --white: #ffffff;
