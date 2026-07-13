@@ -683,6 +683,19 @@ video {
   fill: var(--cyan-400);
 }
 
+.wave-divider--navyToCyan {
+  margin-top: -1px;
+  background: var(--navy-950);
+}
+
+.wave-divider--navyToCyan .wave-divider__base {
+  fill: var(--navy-900);
+}
+
+.wave-divider--navyToCyan .wave-divider__sheen {
+  fill: var(--cyan-300);
+}
+
 .quick-info {
   color: var(--ink);
   background: var(--sand-100);

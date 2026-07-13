@@ -28,13 +28,16 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <WaveDivider variant="navyToCyan" />
         <IntroVideoSection />
+        <WaveDivider variant="navyToCyan" />
         <Quiz />
         <EditorialRoller
           items={t.rollers.one.items}
           label={t.rollers.one.label}
         />
         <AboutSamurai />
+        <WaveDivider variant="navyToCyan" />
         <SocialProofSection />
         <EditorialRoller
           items={t.rollers.two.items}
