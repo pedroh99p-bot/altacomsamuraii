@@ -25,6 +25,7 @@ export type ConsentPreferences = {
 export const analyticsEvents = [
   "page_view",
   "view_content",
+  "intro_video_control",
   "hero_cta_click",
   "whatsapp_click",
   "quiz_start",

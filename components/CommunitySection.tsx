@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowRight, UsersRound } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { business } from "@/data/business";
 import { communityCards } from "@/data/benefits";
 import { SectionHeading } from "./SectionHeading";
@@ -36,10 +36,6 @@ export function CommunitySection() {
             className="community__image"
           />
           <div className="community__gradient" aria-hidden="true" />
-          <div className="community__seal">
-            <UsersRound aria-hidden="true" />
-            Comunidade real
-          </div>
           <div className="community__cards">
             {communityCards.map((card) => (
               <article key={card.title}>

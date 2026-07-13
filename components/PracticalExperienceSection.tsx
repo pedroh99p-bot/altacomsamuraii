@@ -1,5 +1,7 @@
 "use client";
 
+import type { CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CheckCircle2,
   Clock3,
@@ -12,6 +14,7 @@ import {
   Waves,
 } from "lucide-react";
 import { useTranslations } from "@/i18n/useTranslations";
+import { cx } from "@/lib/utils";
 import { ClassProfilesCarousel } from "./ClassProfilesCarousel";
 import { WhatsAppButton } from "./WhatsAppButton";
 
@@ -20,10 +23,36 @@ const factIcons = [Clock3, MapPin, Waves, Sun, Languages] as const;
 
 export function PracticalExperienceSection() {
   const { t } = useTranslations();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [timelineActive, setTimelineActive] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || !("IntersectionObserver" in window)) {
+      setTimelineActive(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setTimelineActive(true);
+        observer.disconnect();
+      },
+      {
+        rootMargin: "0px 0px -18% 0px",
+        threshold: 0.06,
+      },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
-      className="practical"
+      ref={sectionRef}
+      className={cx("practical", timelineActive && "practical--timeline-active")}
       id="como-funciona"
       aria-labelledby="practical-title"
     >
@@ -40,7 +69,10 @@ export function PracticalExperienceSection() {
           {t.practical.steps.map((step, index) => {
             const Icon = stepIcons[index] ?? Sparkles;
             return (
-              <li key={step.number}>
+              <li
+                key={step.number}
+                style={{ "--timeline-delay": `${index * 155}ms` } as CSSProperties}
+              >
                 <span>{step.number}</span>
                 <Icon aria-hidden="true" />
                 <h3>{step.title}</h3>

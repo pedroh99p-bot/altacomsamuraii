@@ -35,6 +35,9 @@ export const es: Dictionary = {
       "Entrenamiento a tu ritmo",
     ],
   },
+  preloader: {
+    text: "Preparando tu experiencia...",
+  },
   navigation: {
     experience: "La experiencia",
     quiz: "Quiz",
@@ -58,7 +61,7 @@ export const es: Dictionary = {
     title: "Aprende altinha con quien",
     titleHighlight: "vive la playa.",
     body:
-      "Clases para quien nunca tocó una pelota, principiantes que quieren ganar confianza y quienes ya juegan y quieren mejorar la técnica en la arena.",
+      "Clases para quien nunca jugó, principiantes que quieren confianza y quienes ya practican y quieren evolucionar en la arena.",
     primaryCta: "Reservar por WhatsApp",
     secondaryCta: "Descubrir la clase ideal",
     chipsAria: "Beneficios principales",
@@ -77,8 +80,11 @@ export const es: Dictionary = {
     body:
       "La altinha combina técnica, conexión, diversión y evolución en un escenario que forma parte de la experiencia.",
     cta: "Quiero hacer mi primera clase",
+    controls: "Controles del video",
     pause: "Pausar video",
     play: "Reproducir video",
+    unmute: "Activar sonido",
+    mute: "Silenciar video",
     note: "Técnica, playa y movimiento en una experiencia práctica.",
     whatsappMessage:
       "¡Hola, Samurai! Vi el video de la experiencia en el sitio y quiero hacer mi primera clase en Praia do Pontal.",
@@ -124,6 +130,20 @@ export const es: Dictionary = {
     title: "Descubre la clase ideal para ti.",
     description:
       "Responde en menos de un minuto y lleva a WhatsApp un mensaje útil con tu nivel, objetivo, formato preferido y principal duda.",
+    cover: {
+      eyebrow: "Evaluación rápida",
+      title: "Descubre la clase ideal para tu momento.",
+      text:
+        "Responde algunas preguntas rápidas para que Samurai entienda tu nivel, tu objetivo y la mejor manera de empezar.",
+      factsAria: "Resumen de la evaluación rápida",
+      facts: [
+        "5 preguntas rápidas",
+        "Toma menos de 1 minuto",
+        "Orientación personalizada",
+      ],
+      startButton: "Empezar ahora",
+      progress: "preguntas antes de la orientación",
+    },
     startTitle: "Empieza por tu momento actual.",
     startText:
       "No hay respuesta correcta. Las respuestas solo sirven para facilitar la conversación con Samurai.",
@@ -270,8 +290,6 @@ export const es: Dictionary = {
       "Personas de diferentes niveles compartiendo la misma energía, aprendiendo y disfrutando la playa.",
     imageAlt:
       "Grupo de Altinha com Samurai reunido en Praia do Pontal después de una actividad",
-    badge: "Comunidad real",
-    mediaNote: "Foto real de la experiencia en la playa",
     testimonialsTitle: "Evaluaciones reales",
     noTestimonials:
       "Todavía no se agregaron evaluaciones autorizadas de Google. El carrusel permanece oculto hasta que existan datos reales.",

@@ -8,6 +8,7 @@ export function FloatingWhatsApp() {
   const { t } = useTranslations();
   const [visible, setVisible] = useState(false);
   const [heroVisible, setHeroVisible] = useState(true);
+  const [quizVisible, setQuizVisible] = useState(false);
   const [finalAreaVisible, setFinalAreaVisible] = useState(false);
   const finalAreaEntries = useRef(new Set<string>());
 
@@ -34,6 +35,21 @@ export function FloatingWhatsApp() {
     );
 
     observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const quiz = document.getElementById("quiz");
+    if (!quiz || !("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setQuizVisible(entry.isIntersecting && entry.intersectionRatio >= 0.18);
+      },
+      { threshold: [0, 0.18, 0.4, 0.6] },
+    );
+
+    observer.observe(quiz);
     return () => observer.disconnect();
   }, []);
 
@@ -71,7 +87,7 @@ export function FloatingWhatsApp() {
     };
   }, []);
 
-  if (!visible || heroVisible || finalAreaVisible) return null;
+  if (!visible || heroVisible || quizVisible || finalAreaVisible) return null;
 
   return (
     <div className="floating-wa">

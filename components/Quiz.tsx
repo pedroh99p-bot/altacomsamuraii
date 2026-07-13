@@ -1,7 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, RotateCcw, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Clock3,
+  MessageCircle,
+  RotateCcw,
+  Sparkles,
+} from "lucide-react";
+import { business } from "@/data/business";
 import {
   buildQuizWhatsAppMessage,
   getQuizAnswerLabels,
@@ -15,6 +24,8 @@ import { trackEvent } from "@/lib/analytics";
 import { cx } from "@/lib/utils";
 import { WhatsAppButton } from "./WhatsAppButton";
 
+const coverIcons = [Sparkles, Clock3, MessageCircle] as const;
+
 export function Quiz() {
   const { t } = useTranslations();
   const quizQuestions = t.quiz.questions as readonly LocalizedQuizQuestion[];
@@ -24,6 +35,7 @@ export function Quiz() {
   const [completed, setCompleted] = useState(false);
   const [isAdvancing, setIsAdvancing] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const coverTitleRef = useRef<HTMLHeadingElement>(null);
   const advanceTimerRef = useRef<number | null>(null);
 
   const currentQuestion = quizQuestions[step];
@@ -124,10 +136,15 @@ export function Quiz() {
     setIsAdvancing(false);
     setStep(0);
     setAnswers({});
+    window.requestAnimationFrame(() => coverTitleRef.current?.focus());
   };
 
   return (
-    <section className="quiz-section" id="quiz" aria-labelledby="quiz-title">
+    <section
+      className={cx("quiz-section", !started && "quiz-section--cover")}
+      id="quiz"
+      aria-labelledby="quiz-title"
+    >
       <div className="section-shell quiz-section__layout">
         <div className="quiz-section__intro">
           <span>{t.quiz.eyebrow}</span>
@@ -135,20 +152,53 @@ export function Quiz() {
           <p>{t.quiz.description}</p>
         </div>
 
-        <div className="quiz-card" aria-live="polite">
+        <div
+          className={cx("quiz-card", !started && "quiz-card--cover")}
+          aria-live="polite"
+        >
           <div className="quiz-card__progress" aria-hidden="true">
             <span style={{ width: `${progress}%` }} />
           </div>
 
           {!started ? (
-            <div className="quiz-card__body quiz-card__start">
-              <h3 ref={titleRef} tabIndex={-1}>
-                {t.quiz.startTitle}
+            <div className="quiz-card__body quiz-cover">
+              <div className="quiz-cover__brand">
+                <Image
+                  src={business.assets.logo}
+                  alt=""
+                  width={64}
+                  height={64}
+                />
+                <span>{t.common.brand}</span>
+              </div>
+              <span className="quiz-cover__eyebrow">{t.quiz.cover.eyebrow}</span>
+              <h3 ref={coverTitleRef} tabIndex={-1}>
+                {t.quiz.cover.title}
               </h3>
-              <p>{t.quiz.startText}</p>
-              <button type="button" className="quiz-card__primary" onClick={start}>
-                {t.quiz.startButton}
+              <p>{t.quiz.cover.text}</p>
+              <ul className="quiz-cover__chips" aria-label={t.quiz.cover.factsAria}>
+                {t.quiz.cover.facts.map((fact, index) => {
+                  const Icon = coverIcons[index] ?? Sparkles;
+                  return (
+                    <li key={fact}>
+                      <Icon aria-hidden="true" />
+                      <span>{fact}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+              <button
+                type="button"
+                className="quiz-card__primary quiz-cover__button"
+                onClick={start}
+              >
+                <span>{t.quiz.cover.startButton}</span>
+                <ArrowRight aria-hidden="true" />
               </button>
+              <div className="quiz-cover__progress-note" aria-hidden="true">
+                <span>0/{quizQuestions.length}</span>
+                {t.quiz.cover.progress}
+              </div>
             </div>
           ) : completed ? (
             <div className="quiz-card__body quiz-result">

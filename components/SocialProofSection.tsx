@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { Camera, UsersRound } from "lucide-react";
 import { business } from "@/data/business";
 import { getAuthorizedGoogleTestimonials } from "@/data/testimonials";
 import { useTranslations } from "@/i18n/useTranslations";
@@ -34,14 +33,6 @@ export function SocialProofSection() {
             height={779}
             sizes="(max-width: 900px) 100vw, 920px"
           />
-          <div className="social-proof__badge">
-            <UsersRound aria-hidden="true" />
-            {t.community.badge}
-          </div>
-          <div className="social-proof__media-note">
-            <Camera aria-hidden="true" />
-            {t.community.mediaNote}
-          </div>
         </div>
 
         {testimonials.length > 0 ? (

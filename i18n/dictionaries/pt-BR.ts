@@ -33,6 +33,9 @@ export const ptBR = {
       "Treino no seu ritmo",
     ],
   },
+  preloader: {
+    text: "Preparando sua experiência...",
+  },
   navigation: {
     experience: "A experiência",
     quiz: "Quiz",
@@ -56,7 +59,7 @@ export const ptBR = {
     title: "Aprenda altinha com quem",
     titleHighlight: "vive a praia.",
     body:
-      "Aulas para quem nunca tocou em uma bola, para iniciantes que querem ganhar confiança e para quem já joga e quer evoluir com técnica na areia.",
+      "Aulas para quem nunca jogou, para iniciantes que querem ganhar confiança e para quem já pratica e quer evoluir na areia.",
     primaryCta: "Agendar pelo WhatsApp",
     secondaryCta: "Descobrir a aula ideal",
     chipsAria: "Benefícios principais",
@@ -76,8 +79,11 @@ export const ptBR = {
     body:
       "Altinha combina técnica, conexão, diversão e evolução em um cenário que faz parte da experiência.",
     cta: "Quero fazer minha primeira aula",
+    controls: "Controles do vídeo",
     pause: "Pausar vídeo",
     play: "Reproduzir vídeo",
+    unmute: "Ativar som",
+    mute: "Desativar som",
     note: "Técnica, praia e movimento em uma experiência prática.",
     whatsappMessage:
       "Olá, Samurai! Vi o vídeo da experiência no site e quero fazer minha primeira aula na Praia do Pontal.",
@@ -123,6 +129,20 @@ export const ptBR = {
     title: "Descubra a aula ideal para você.",
     description:
       "Responda em menos de um minuto e leve para o WhatsApp uma mensagem útil, com seu nível, objetivo, preferência de formato e principal dúvida.",
+    cover: {
+      eyebrow: "Pré-atendimento",
+      title: "Descubra a aula ideal para o seu momento.",
+      text:
+        "Responda algumas perguntas rápidas para o Samurai entender seu nível, objetivo e a melhor forma de começar.",
+      factsAria: "Resumo do pré-atendimento",
+      facts: [
+        "5 perguntas rápidas",
+        "Leva menos de 1 minuto",
+        "Resposta personalizada",
+      ],
+      startButton: "Começar agora",
+      progress: "perguntas antes da indicação",
+    },
     startTitle: "Comece pelo seu momento atual.",
     startText:
       "Não existe resposta certa. As respostas só servem para facilitar a conversa com Samurai.",
@@ -269,8 +289,6 @@ export const ptBR = {
       "Pessoas de diferentes níveis dividindo a mesma energia, aprendendo e aproveitando a praia.",
     imageAlt:
       "Grupo da Altinha com Samurai reunido na Praia do Pontal depois de uma atividade",
-    badge: "Comunidade real",
-    mediaNote: "Foto real da experiência na praia",
     testimonialsTitle: "Avaliações reais",
     noTestimonials:
       "Avaliações do Google autorizadas ainda não foram adicionadas. O carrossel fica oculto até existirem dados reais.",
