@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { ArrowDown, BarChart3, MapPin, Smile, Waves } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { business } from "@/data/business";
 import { useTranslations } from "@/i18n/useTranslations";
 import { WhatsAppButton } from "./WhatsAppButton";
@@ -11,6 +12,32 @@ const highPriorityVideo = { fetchPriority: "high" } as const;
 
 export function Hero() {
   const { t } = useTranslations();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const playVideo = () => {
+      video.defaultMuted = true;
+      video.muted = true;
+      void video.play().catch(() => undefined);
+    };
+    const resumeWhenVisible = () => {
+      if (document.visibilityState === "visible") playVideo();
+    };
+
+    playVideo();
+    video.addEventListener("canplay", playVideo);
+    window.addEventListener("pageshow", playVideo);
+    document.addEventListener("visibilitychange", resumeWhenVisible);
+
+    return () => {
+      video.removeEventListener("canplay", playVideo);
+      window.removeEventListener("pageshow", playVideo);
+      document.removeEventListener("visibilitychange", resumeWhenVisible);
+    };
+  }, []);
 
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
@@ -25,6 +52,7 @@ export function Hero() {
       />
       {/* Hero video configured to loop indefinitely with autoplay, muted, and playsinline */}
       <video
+        ref={videoRef}
         {...highPriorityVideo}
         className="hero__background-video"
         autoPlay
@@ -37,7 +65,6 @@ export function Hero() {
         <source
           src={business.assets.heroVideo}
           type="video/webm"
-          media="(min-width: 768px)"
         />
       </video>
       <div className="hero__overlay" aria-hidden="true" />

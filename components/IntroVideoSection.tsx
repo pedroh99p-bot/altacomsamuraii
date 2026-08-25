@@ -1,7 +1,7 @@
 "use client";
 
 import { Pause, Play, Sparkles, Volume2, VolumeX } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { business } from "@/data/business";
 import { useTranslations } from "@/i18n/useTranslations";
 import { trackEvent } from "@/lib/analytics";
@@ -9,65 +9,10 @@ import { WhatsAppButton } from "./WhatsAppButton";
 
 export function IntroVideoSection() {
   const { locale, t } = useTranslations();
-  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const userPausedRef = useRef(false);
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section || !("IntersectionObserver" in window)) {
-      setShouldLoadVideo(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setShouldLoadVideo(true);
-        observer.disconnect();
-      },
-      { threshold: 0.15 },
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.defaultMuted = true;
-    video.muted = true;
-    setIsMuted(true);
-  }, []);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !shouldLoadVideo || !("IntersectionObserver" in window)) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          video.pause();
-          return;
-        }
-
-        if (!userPausedRef.current) {
-          void video.play().catch(() => setIsPlaying(false));
-        }
-      },
-      { threshold: 0.18 },
-    );
-
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, [shouldLoadVideo]);
+  const [isMuted, setIsMuted] = useState(false);
 
   const trackIntroControl = (action: "play" | "pause" | "unmute" | "mute") => {
     trackEvent("intro_video_control", {
@@ -82,7 +27,6 @@ export function IntroVideoSection() {
     if (!video) return;
 
     if (video.paused) {
-      userPausedRef.current = false;
       void video
         .play()
         .then(() => setIsPlaying(true))
@@ -91,10 +35,25 @@ export function IntroVideoSection() {
       return;
     }
 
-    userPausedRef.current = true;
     video.pause();
     setIsPlaying(false);
     trackIntroControl("pause");
+  };
+
+  const startVideo = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.defaultMuted = false;
+    video.muted = false;
+    if (video.volume === 0) video.volume = 1;
+    setHasStarted(true);
+    setIsMuted(false);
+    void video
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
+    trackIntroControl("play");
   };
 
   const toggleAudio = () => {
@@ -139,7 +98,6 @@ export function IntroVideoSection() {
 
   return (
     <section
-      ref={sectionRef}
       className="intro-video"
       id="experiencia"
       aria-labelledby="intro-video-title"
@@ -166,54 +124,64 @@ export function IntroVideoSection() {
           <div className="intro-video__frame">
             <video
               ref={videoRef}
-              autoPlay={shouldLoadVideo}
               muted={isMuted}
-              loop
               playsInline
-              preload={shouldLoadVideo ? "metadata" : "none"}
-              poster={shouldLoadVideo ? business.assets.heroPoster : undefined}
+              preload="metadata"
+              poster={business.assets.introVideoPoster}
+              onClick={hasStarted ? togglePlayback : startVideo}
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
+              onEnded={() => setIsPlaying(false)}
               onVolumeChange={syncAudioState}
             >
-              {shouldLoadVideo ? (
-                <source src={business.assets.introVideo} type="video/webm" />
-              ) : null}
+              <source src={business.assets.introVideo} type="video/webm" />
             </video>
-            <div
-              className="intro-video__control-dock"
-              role="group"
-              aria-label={t.introVideo.controls}
-            >
+            {!hasStarted ? (
               <button
                 type="button"
-                className="intro-video__control"
-                onClick={togglePlayback}
-                aria-label={playbackLabel}
-                title={playbackLabel}
-                aria-pressed={isPlaying}
+                className="intro-video__cover-play"
+                onClick={startVideo}
+                aria-label={t.introVideo.play}
+                title={t.introVideo.play}
               >
-                {isPlaying ? (
-                  <Pause aria-hidden="true" />
-                ) : (
-                  <Play aria-hidden="true" />
-                )}
+                <Play aria-hidden="true" />
               </button>
-              <button
-                type="button"
-                className="intro-video__control"
-                onClick={toggleAudio}
-                aria-label={audioLabel}
-                title={audioLabel}
-                aria-pressed={!isMuted}
+            ) : (
+              <div
+                className="intro-video__control-dock"
+                role="group"
+                aria-label={t.introVideo.controls}
               >
-                {isMuted ? (
-                  <VolumeX aria-hidden="true" />
-                ) : (
-                  <Volume2 aria-hidden="true" />
-                )}
-              </button>
-            </div>
+                <button
+                  type="button"
+                  className="intro-video__control"
+                  onClick={togglePlayback}
+                  aria-label={playbackLabel}
+                  title={playbackLabel}
+                  aria-pressed={isPlaying}
+                >
+                  {isPlaying ? (
+                    <Pause aria-hidden="true" />
+                  ) : (
+                    <Play aria-hidden="true" />
+                  )}
+                </button>
+                <button
+                  type="button"
+                  className="intro-video__control"
+                  onClick={toggleAudio}
+                  aria-label={audioLabel}
+                  title={audioLabel}
+                  aria-pressed={!isMuted}
+                >
+                  {isMuted ? (
+                    <VolumeX aria-hidden="true" />
+                  ) : (
+                    <Volume2 aria-hidden="true" />
+                  )}
+                </button>
+              </div>
+            )}
           </div>
           <div className="intro-video__note" aria-hidden="true">
             {t.introVideo.note}

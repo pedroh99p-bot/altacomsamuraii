@@ -3558,6 +3558,49 @@ section[id] {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  cursor: pointer;
+}
+
+.intro-video__cover-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 86px;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  border-radius: 50%;
+  color: var(--navy-950);
+  background: var(--cyan-300);
+  box-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.42),
+    0 0 0 10px rgba(6, 17, 31, 0.32);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.intro-video__cover-play:hover,
+.intro-video__cover-play:focus-visible {
+  background: var(--yellow);
+  box-shadow:
+    0 20px 52px rgba(0, 0, 0, 0.46),
+    0 0 0 12px rgba(127, 228, 255, 0.22);
+  outline: none;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.intro-video__cover-play svg {
+  width: 34px;
+  height: 34px;
+  margin-left: 4px;
+  fill: currentColor;
 }
 
 .intro-video__frame::after {
