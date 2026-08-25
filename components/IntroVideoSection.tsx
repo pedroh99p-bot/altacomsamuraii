@@ -151,7 +151,7 @@ export function IntroVideoSection() {
               onPause={() => setIsPlaying(false)}
               onVolumeChange={syncAudioState}
             >
-              <source src={business.assets.introVideo} type="video/mp4" />
+              <source src={business.assets.introVideo} type="video/webm" />
             </video>
             <div
               className="intro-video__control-dock"

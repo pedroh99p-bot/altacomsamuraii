@@ -35,15 +35,12 @@ export const business = {
     languages: "Atendimento em PT, EN e ES",
   },
   assets: {
-    heroVideo:
-      "https://res.cloudinary.com/dm9mnc97u/video/upload/v1783733938/0710_1_t7jnfw.webm",
-    introVideo:
-      "https://res.cloudinary.com/dm9mnc97u/video/upload/v1776732262/VEM_CONHECER_O_ESPORTE_QUE_MAIS_CRESCE_NO_BRASIL_%EF%B8%8F_Imagens-edi%C3%A7%C3%A3o-_ronygomess__j4ikne.mp4",
-    logo: "https://res.cloudinary.com/dm9mnc97u/image/upload/v1783733963/2d5e7d16-3742-4552-947e-5abe24bfd0a3_1_gqrldy.webp",
-    communityImage:
-      "https://res.cloudinary.com/dm9mnc97u/image/upload/v1783733933/1_encontro_realizado_com_sucesso_%EF%A5%B7_Gratid%C3%A3o_aos_envolvidos_foi_tudo_lindo_demais._Que_di_1_zqd21y.webp",
-    samuraiPortrait:
-      "https://res.cloudinary.com/dm9mnc97u/image/upload/v1783734276/609711e6-455f-47c2-a92e-cdee49ab9f57_v7glsh.webp",
+    heroVideo: "/media/altinha-samurai.webm",
+    introVideo: "/media/altinha-samurai.webm",
+    logo: "/media/logo-altinha-com-samurai.webp",
+    communityImage: "/media/comunidade-altinha.webp",
+    samuraiPortrait: "/media/samurai-especialista.webp",
+    finalOfferImage: "/media/oferta-final-altinha.jpg",
   },
   privacy: {
     legalName: null,

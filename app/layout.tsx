@@ -51,8 +51,8 @@ export const metadata: Metadata = {
     images: [business.assets.communityImage],
   },
   icons: {
-    icon: business.assets.logo,
-    apple: business.assets.logo,
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
   },
 };
 

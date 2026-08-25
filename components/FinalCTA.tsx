@@ -12,7 +12,7 @@ export function FinalCTA() {
   return (
     <section className="final-cta" id="agendar" aria-labelledby="final-title">
       <Image
-        src={business.assets.communityImage}
+        src={business.assets.finalOfferImage}
         alt=""
         fill
         sizes="100vw"
