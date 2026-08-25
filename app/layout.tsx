@@ -38,7 +38,7 @@ export const metadata: Metadata = {
         url: business.assets.socialImage,
         width: 1200,
         height: 630,
-        alt: "Samurai e alunos em encontro de altinha na praia",
+        alt: "Equipe Altinha com Samurai na praia",
       },
     ],
     locale: "pt_BR",

@@ -42,7 +42,7 @@ export const business = {
     communityImage: "/media/comunidade-altinha.webp",
     samuraiPortrait: "/media/samurai-especialista.webp",
     finalOfferImage: "/media/oferta-final-altinha.jpg",
-    socialImage: "/media/altinha-social-1200x630.webp",
+    socialImage: "/media/altinha-whatsapp-preview.webp",
   },
   privacy: {
     legalName: null,
