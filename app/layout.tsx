@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: business.name,
     images: [
       {
-        url: business.assets.communityImage,
+        url: business.assets.socialImage,
         width: 1200,
         height: 630,
         alt: "Samurai e alunos em encontro de altinha na praia",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: [business.assets.communityImage],
+    images: [business.assets.socialImage],
   },
   icons: {
     icon: "/icon.png",

@@ -10,7 +10,6 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { IntroVideoSection } from "@/components/IntroVideoSection";
 import { LocationSection } from "@/components/LocationSection";
-import { Preloader } from "@/components/Preloader";
 import { PracticalExperienceSection } from "@/components/PracticalExperienceSection";
 import { Quiz } from "@/components/Quiz";
 import { SocialProofSection } from "@/components/SocialProofSection";
@@ -23,7 +22,6 @@ export default function Home() {
 
   return (
     <>
-      <Preloader />
       <TopbarRoller />
       <Header />
       <main>

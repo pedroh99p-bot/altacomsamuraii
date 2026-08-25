@@ -9,10 +9,32 @@ import { WhatsAppButton } from "./WhatsAppButton";
 
 export function IntroVideoSection() {
   const { locale, t } = useTranslations();
+  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const userPausedRef = useRef(false);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || !("IntersectionObserver" in window)) {
+      setShouldLoadVideo(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setShouldLoadVideo(true);
+        observer.disconnect();
+      },
+      { threshold: 0.15 },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -25,7 +47,9 @@ export function IntroVideoSection() {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !("IntersectionObserver" in window)) return;
+    if (!video || !shouldLoadVideo || !("IntersectionObserver" in window)) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -43,7 +67,7 @@ export function IntroVideoSection() {
 
     observer.observe(video);
     return () => observer.disconnect();
-  }, []);
+  }, [shouldLoadVideo]);
 
   const trackIntroControl = (action: "play" | "pause" | "unmute" | "mute") => {
     trackEvent("intro_video_control", {
@@ -115,6 +139,7 @@ export function IntroVideoSection() {
 
   return (
     <section
+      ref={sectionRef}
       className="intro-video"
       id="experiencia"
       aria-labelledby="intro-video-title"
@@ -141,17 +166,19 @@ export function IntroVideoSection() {
           <div className="intro-video__frame">
             <video
               ref={videoRef}
-              autoPlay
+              autoPlay={shouldLoadVideo}
               muted={isMuted}
               loop
               playsInline
-              preload="metadata"
-              poster={business.assets.communityImage}
+              preload={shouldLoadVideo ? "metadata" : "none"}
+              poster={shouldLoadVideo ? business.assets.heroPoster : undefined}
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               onVolumeChange={syncAudioState}
             >
-              <source src={business.assets.introVideo} type="video/webm" />
+              {shouldLoadVideo ? (
+                <source src={business.assets.introVideo} type="video/webm" />
+              ) : null}
             </video>
             <div
               className="intro-video__control-dock"

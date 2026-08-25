@@ -74,9 +74,10 @@ function AnimatedMetric({ value, suffix, label }: AnimatedMetricProps) {
 
   return (
     <article ref={ref} className="about__metric">
-      <strong aria-label={`${value}${suffix} - ${label}`}>
+      <strong>
         <span aria-hidden="true">{displayValue}</span>
         {suffix ? <em aria-hidden="true">{suffix}</em> : null}
+        <span className="sr-only">{`${value}${suffix}`}</span>
       </strong>
       <span>{label}</span>
     </article>

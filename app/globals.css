@@ -3002,6 +3002,12 @@ section[id] {
   background: var(--navy-950);
 }
 
+.hero__poster {
+  z-index: -4;
+  object-fit: cover;
+  object-position: 58% 46%;
+}
+
 .hero__overlay {
   position: absolute;
   inset: 0;
@@ -3132,7 +3138,8 @@ section[id] {
     min-height: max(860px, calc(100svh - 32px - var(--header-height)));
   }
 
-  .hero__background-video {
+  .hero__background-video,
+  .hero__poster {
     object-position: 56% 41%;
   }
 
@@ -3223,7 +3230,8 @@ section[id] {
     min-height: max(900px, calc(100svh - 30px - var(--header-height)));
   }
 
-  .hero__background-video {
+  .hero__background-video,
+  .hero__poster {
     object-position: 58% 37%;
   }
 
@@ -5660,18 +5668,40 @@ section[id] {
 
 .proof-carousel__dots button,
 .class-profile-carousel__dots button {
-  width: 10px;
-  height: 10px;
-  min-height: 10px;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
   padding: 0;
-  border-radius: 999px;
-  background: rgba(245, 251, 255, 0.38);
+  border: 0;
+  background: transparent;
 }
 
-.proof-carousel__dots button[aria-current="true"],
-.class-profile-carousel__dots button[aria-current="true"] {
+.proof-carousel__dots button::before,
+.class-profile-carousel__dots button::before {
+  width: 10px;
+  height: 10px;
+  content: "";
+  border-radius: 999px;
+  background: rgba(245, 251, 255, 0.38);
+  transition: width 180ms ease, background-color 180ms ease;
+}
+
+.proof-carousel__dots button[aria-current="true"]::before,
+.class-profile-carousel__dots button[aria-current="true"]::before {
   width: 24px;
   background: var(--cyan-300);
+}
+
+.about__metric .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .class-profile-carousel {
@@ -6126,6 +6156,10 @@ section[id] {
   }
 
   .hero__background-video {
+    display: none;
+  }
+
+  .hero__poster {
     object-position: 59% 34%;
   }
 

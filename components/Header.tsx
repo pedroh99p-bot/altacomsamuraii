@@ -24,7 +24,7 @@ export function Header() {
 
   return (
     <header className={`site-header${scrolled ? " site-header--scrolled" : ""}`}>
-      <a className="brand" href="#top" aria-label="Altinha com Samurai">
+      <a className="brand" href="#top">
         <Image
           src={business.assets.logo}
           alt=""

@@ -1,64 +1,44 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowDown, BarChart3, MapPin, Smile, Waves } from "lucide-react";
-import { useEffect, useRef } from "react";
 import { business } from "@/data/business";
 import { useTranslations } from "@/i18n/useTranslations";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 const benefitIcons = [Smile, BarChart3, Waves, MapPin] as const;
-const heroReadyEvent = "samurai:hero-ready";
+const highPriorityVideo = { fetchPriority: "high" } as const;
 
 export function Hero() {
   const { t } = useTranslations();
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    let dispatched = false;
-
-    const markReady = () => {
-      if (dispatched) return;
-      dispatched = true;
-      window.dispatchEvent(new Event(heroReadyEvent));
-    };
-
-    if (!video) {
-      window.requestAnimationFrame(markReady);
-      return;
-    }
-
-    if (video.readyState >= 2) {
-      window.requestAnimationFrame(markReady);
-      return;
-    }
-
-    video.addEventListener("loadeddata", markReady, { once: true });
-    video.addEventListener("canplay", markReady, { once: true });
-    video.addEventListener("error", markReady, { once: true });
-
-    return () => {
-      video.removeEventListener("loadeddata", markReady);
-      video.removeEventListener("canplay", markReady);
-      video.removeEventListener("error", markReady);
-    };
-  }, []);
 
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
+      <Image
+        src={business.assets.heroPoster}
+        alt=""
+        fill
+        priority
+        fetchPriority="high"
+        sizes="100vw"
+        className="hero__poster"
+      />
       {/* Hero video configured to loop indefinitely with autoplay, muted, and playsinline */}
       <video
-        ref={videoRef}
+        {...highPriorityVideo}
         className="hero__background-video"
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
-        poster={business.assets.communityImage}
+        preload="auto"
         aria-hidden="true"
       >
-        <source src={business.assets.heroVideo} type="video/webm" />
+        <source
+          src={business.assets.heroVideo}
+          type="video/webm"
+          media="(min-width: 768px)"
+        />
       </video>
       <div className="hero__overlay" aria-hidden="true" />
       <div className="hero__content">

@@ -35,12 +35,14 @@ export const business = {
     languages: "Atendimento em PT, EN e ES",
   },
   assets: {
-    heroVideo: "/media/altinha-samurai.webm",
-    introVideo: "/media/altinha-samurai.webm",
+    heroVideo: "/media/altinha-samurai-hero.webm",
+    introVideo: "/media/altinha-samurai-otimizado.webm",
+    heroPoster: "/media/hero-poster.webp",
     logo: "/media/logo-altinha-com-samurai.webp",
     communityImage: "/media/comunidade-altinha.webp",
     samuraiPortrait: "/media/samurai-especialista.webp",
     finalOfferImage: "/media/oferta-final-altinha.jpg",
+    socialImage: "/media/altinha-social-1200x630.webp",
   },
   privacy: {
     legalName: null,
