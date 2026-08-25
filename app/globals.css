@@ -6268,10 +6268,6 @@ section[id] {
     min-height: max(660px, calc(100dvh - 30px - var(--header-height)));
   }
 
-  .hero__background-video {
-    display: none;
-  }
-
   .hero__poster {
     object-position: 59% 34%;
   }
