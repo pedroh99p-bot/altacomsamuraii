@@ -1,6 +1,6 @@
 export const business = {
   name: "Altinha com Samurai",
-  siteUrl: "https://altinhacomsamurai.com.br",
+  siteUrl: "https://altacomsamuraii.vercel.app",
   instructor: 'Wallace "Samurai" Costa',
   service:
     "Aulas de altinha na praia para iniciantes, intermediários e avançados.",
@@ -45,7 +45,8 @@ export const business = {
     communityImage: "/media/comunidade-altinha.webp",
     samuraiPortrait: "/media/samurai-especialista.webp",
     finalOfferImage: "/media/oferta-final-altinha.jpg",
-    socialImage: "/media/altinha-whatsapp-preview.webp",
+    socialImage:
+      "https://res.cloudinary.com/dhbrxzt5a/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/v1787678460/dfabab1c-8996-42f0-8837-08e79b69e079_mod4yj.jpg",
   },
   privacy: {
     legalName: null,
