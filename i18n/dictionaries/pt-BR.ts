@@ -12,6 +12,7 @@ export const ptBR = {
     google: "Google",
     notInformed: "Não informado",
     production: "Produzido por Montana Tech Lab",
+    productionBy: "Produzido por",
   },
   languages: {
     label: "Selecionar idioma",

@@ -19,12 +19,15 @@ export const business = {
     mapQuery:
       "Praia do Pontal Posto 12 Recreio dos Bandeirantes Rio de Janeiro",
     mapEmbedSrc:
-      "https://www.google.com/maps?q=Praia%20do%20Pontal%20Posto%2012%20Recreio%20dos%20Bandeirantes%20Rio%20de%20Janeiro&output=embed",
+      "https://www.google.com/maps?q=-23.031944,-43.471111&z=16&output=embed",
     routeUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=Praia%20do%20Pontal%20Posto%2012%20Recreio%20dos%20Bandeirantes%20Rio%20de%20Janeiro",
+      "https://www.google.com/maps/dir/?api=1&destination=-23.031944,-43.471111",
     exactAddress: null,
-    coordinates: null,
-    mapStatus: "approximate",
+    coordinates: {
+      latitude: -23.031944,
+      longitude: -43.471111,
+    },
+    mapStatus: "verified",
   },
   serviceFacts: {
     frequency: "Aulas todos os dias",
@@ -51,6 +54,6 @@ export const business = {
   },
   productionCredit: {
     name: "Montana Tech Lab",
-    url: null as string | null,
+    url: "https://www.instagram.com/montanatechlab/" as string | null,
   },
 } as const;

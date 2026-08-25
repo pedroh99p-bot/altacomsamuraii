@@ -89,7 +89,9 @@ export function Footer() {
             rel="noopener noreferrer"
             aria-label={t.common.production}
           >
-            {t.common.production}
+            <span>{t.common.productionBy}</span>
+            <strong>MONTANA</strong>
+            <span>TECH LAB</span>
           </a>
         ) : (
           <span>{t.common.production}</span>

@@ -14,6 +14,7 @@ export const es: Dictionary = {
     google: "Google",
     notInformed: "No informado",
     production: "Producido por Montana Tech Lab",
+    productionBy: "Producido por",
   },
   languages: {
     label: "Seleccionar idioma",
