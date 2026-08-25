@@ -39,6 +39,7 @@ export const business = {
   },
   assets: {
     heroVideo: "/media/altinha-samurai-hero.webm",
+    heroVideoMp4: "/media/altinha-samurai-hero.mp4",
     introVideo: "/media/altinha-experiencia.webm",
     introVideoPoster: "/media/altinha-experiencia-capa.webp",
     heroPoster: "/media/hero-poster.webp",

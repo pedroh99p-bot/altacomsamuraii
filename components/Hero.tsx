@@ -63,6 +63,10 @@ export function Hero() {
         aria-hidden="true"
       >
         <source
+          src={business.assets.heroVideoMp4}
+          type="video/mp4"
+        />
+        <source
           src={business.assets.heroVideo}
           type="video/webm"
         />
